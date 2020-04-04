@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    
+    <title>COVID19- PPE Kit Requirement</title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300|Oswald:300&display=swap" rel="stylesheet">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  </head>
+  <style>
+    
+    label{
+      font-family: 'Oswald', sans-serif;
+      font-size: 20px;
+      font-weight: normal;
+    }
+
+    body{
+      background: #f8f9fa;
+    }
+
+
+  </style>
+  <script>
+
+    // defaults
+    var categories = ['Govt Hospital', 'Charitable Trust', 'Pvt Hospital', 'Other'];
+    var states = [
+      "Jammu", "Kashmir", "Ladakh", "HP", "Uttarakhand", "Punjab", "Haryana", "UP", "Rajasthan", "Delhi", "Bihar", "Jharkhand", "Assam", "Nagaland", "Meghalaya", "Tripura", "Arunachal", "Manipur", "Mizoram", "Sikkim", "Odisha", "West", "MP", "Gujarat", "Maharashtra", "Chattisgarh", "Tamil", "Kerala", "Karnataka", "Telangana", "Andhra", "Andaman", "Lakshadweep", "Puducherry", "Chandigarh", "Goa","Daman"]; 
+var fundingOpts = ['No Funding Required', '50% Funding Required', 'Full Funding Required'];
+
+
+    var SubmitForm = function(data){
+      var orgName = data.orgName;
+      var categ = data.categ;
+      var otherCateg = data.otherCateg;
+      var noOfUnits = data.noOfUnits;
+      var funding = data.funding;
+      var pocName = data.pocName;
+      var pocNumber = data.pocNumber;
+      var designation = data.designation;
+      var city = data.cityName;
+      var district = data.districtName;
+      var state = data.state; 
+      var address = data.address;
+      var pincode = data.pincode;
+      var data = {
+      'entry.1885986903': orgName,
+      'entry.200419212': categ,
+      'entry.1188397528': otherCateg,
+      'entry.913185868': noOfUnits,
+      'entry.1645866316': funding,
+      'entry.367181357': pocName,
+      'entry.213100973': pocNumber,
+      'entry.1000444119': designation, 
+      'entry.762174359': city,
+      'entry.1489426047': district, 
+      'entry.1135682517': state,
+      'entry.14307066': address, 
+      'entry.606584498': pincode 
+      };
+
+      console.log(data);
+         var url = 'https://docs.google.com/forms/u/1/d/e/1FAIpQLSdTRnEeyANkJ7vGrIQ01fATIECr0e-aNlKqYL4JMoozsk7N3g/formResponse';
+        postData(url,data)
+       
+
+    };
+
+    function postData(url,data){
+
+         $.ajax({
+           beforeSend: function(xhrObj){
+        },
+                    url: url,
+                    data: data,
+                    type: 'POST',
+                    dataType: 'xml'
+                });
+
+    }
+
+    function createSelectElem(arr, id){
+      var $select = $("#"+id)
+      arr.forEach(function(val){ 
+        $select.append('<option value=\''+val+'\'>'+val+'</option>');
+
+      }); 
+    }
+
+  $( document ).ready(function() {
+    createSelectElem(categories, 'categories');
+    createSelectElem(fundingOpts, 'funding');
+    createSelectElem(states, 'state');
+
+    $('#mainForm').submit(function(e) {
+      
+       e.preventDefault();
+      var values = $(this).serializeArray();
+      console.log($(this).serialize());
+      var valueDict = {};
+
+      values.forEach(function(entry) {
+        valueDict[entry.name] = entry.value;
+      });
+      
+      console.log(valueDict);
+
+      SubmitForm(valueDict);
+
+    });
+  });
+
+  </script>
+  <body>
+
+    <div class="container">
+      <div class="col-ld-4"></div>
+      <div class="col-ld-4">
+        <div class="container">
+
+          
+          <p class="lead" style="text-align:center;padding:5%">COVID19- PPE Kit Requirement</p>
+
+          <form id="mainForm">
+            <div class="form-group">
+              <label for="exampleInputEmail1">Organization Name</label>
+              <input type="text" class="form-control" name="orgName"  aria-describedby="emailHelp" placeholder="your answer" required>
+             <!--small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small-->
+            </div>
+            <div class="form-group">
+              <label for="exampleFormControlSelect1">Category</label>
+              <select class="form-control" name="categ" id="categories"></select>
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail1">If Others, Please Specify </label>
+              <input type="text" class="form-control" name="otherCateg"  aria-describedby="emailHelp" placeholder="your answer" required>
+             <!--small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small-->
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail1">No. Of Units Required</label>
+              <input type="text" name="noOfUnits" pattern="^[0-9]+$" class="form-control"  aria-describedby="emailHelp" placeholder="your answer" required>
+             <!--small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small-->
+            </div>
+             <div class="form-group">
+              <label for="exampleFormControlSelect1">How Much Funding Required</label>
+              <select class="form-control" name="funding" id="funding"></select>
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail1">Contact Person Name</label>
+              <input type="text" class="form-control" name="pocName"  aria-describedby="emailHelp" placeholder="your answer" required>
+             <!--small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small-->
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail1">Contact Person Number</label>
+              <input type="text" class="form-control" pattern="^[0-9]{10}$" name="pocNumber" aria-describedby="emailHelp" placeholder="your answer" required>
+             <!--small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small-->
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail1">Designation</label>
+              <input type="text" class="form-control"  name="designation"  aria-describedby="emailHelp" placeholder="your answer" required>
+             <!--small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small-->
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail1">City Name</label>
+              <input type="text" class="form-control" name="cityName"  aria-describedby="emailHelp" placeholder="your answer" required>
+             <!--small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small-->
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail1">District Name</label>
+              <input type="text" class="form-control" name="districtName"  aria-describedby="emailHelp" placeholder="your answer" required>
+             <!--small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small-->
+            </div>
+             <div class="form-group">
+              <label for="exampleFormControlSelect1">State</label>
+              <select class="form-control" name="state" id="state"></select>
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail1">Full Postal Address</label>
+              <input type="text" class="form-control" name="address"  aria-describedby="emailHelp" placeholder="your answer" required>
+             <!--small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small-->
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail1">PIN Code</label>
+              <input type="text" class="form-control" name="pincode"  aria-describedby="emailHelp" placeholder="your answer" required>
+             <!--small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small-->
+            </div>
+            <button type="submit" style="text-align:center;margin-top:3%;" class="btn btn-block btn-danger">Submit</button>
+           </form>
+
+        </div>
+
+      </div>
+      <div class="col-ld-4"></div>
+
+    </div>
+  
+  </body>
+</html>
